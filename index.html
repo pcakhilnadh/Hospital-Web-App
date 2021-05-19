@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>The Materialize Tabs Example</title>
+      <meta name = "viewport" content = "width = device-width, initial-scale = 1">      
+      <link rel = "stylesheet" href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css'>
+      <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js'></script>
+   </head>
+   
+   <!-- BODY START -->
+   <body class = "container"> 
+      <div class="col s12 center">
+        <div class="row">
+          <div class="col s10">
+            <h3 class="center red-text"> <b>Padma Homoeo Clinic</b></h3>
+          </div>
+          <div class="col s2 center">
+            <a class = "btn-floating waves-effect waves-light blue lighten-3" id="sync_btn">
+            <i class = "material-icons">sync</i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class = "row">
+        <div class = "col s12">
+          <ul class = "tabs grey lighten-4">
+            <li class = "tab col s3"><a  href = "#patients"><b>Patient Directory</b></a></li>
+            <li class = "tab col s3"><a class="active"  href = "#new_patient"><b>New Patient</b></a></li>
+            <li class = "tab col s3"><a  href = "#consultation"><b>Consultation</b></a></li>
+
+          </ul>
+        </div>
+        <!-- PATIENTS TAB START -->
+        <div id = "patients" class = "col s12">
+          <div class = "col s12 ">
+            <!-- CARD DIV-- START-->
+            <div class = "card grey lighten-5">
+            <br>  
+            <input class="form-control center " id="myInput" type="text" placeholder="Type to search..">       
+            <br>
+            <table class="table table-bordered table-striped highlight">
+              <thead>
+                  <tr>
+                    <th>OP Num</th>
+                    <th>DOJ</th>
+                    <th>Full Name</th>
+                    <th>Contact Number</th>
+                    <th>DOB</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                  </tr>
+              </thead>
+            
+              <tbody id="myTable">
+                <? for (var index =0; index<patient_table_dataset.length; index++) 
+                      {
+                        var row = patient_table_dataset[index]; ?>
+                <tr>
+                  <td> <?= row[0] ?> </td>
+                  <td> 
+                    <? if(typeof (row[1])=="object") { ?>
+                        <?= Utilities.formatDate(row[1], "GMT+5.30", "dd/MM/yyyy") ?>
+                    <? } ?> 
+                  </td>
+                  <td> <?= row[4] ?> </td>
+                  <td> <?= row[5] ?> </td>
+                  <td> 
+                    <? if(typeof (row[2])=="object") { ?>
+                        <?= Utilities.formatDate(row[2], "GMT+5.30", "dd/MM/yyyy") ?>
+                    <? } ?> 
+                  </td>
+                  <td> <?= row[3] ?> </td>
+                  <td> <?= row[11] ?> </td>
+                  <td> <?= row[7]+","+row[8]+","+row[9]+","+row[10] ?> </td>
+                </tr>
+                <? } ?>  
+
+              </tbody>
+            </table>
+
+            </div>
+            <!-- CARD DIV END -->
+         </div> 
+         </div>
+         <!-- PATIENTS TAB END -->
+
+        <!-- NEW PATIENT TAB START -->
+        <div id = "new_patient" class = "col s12">
+          <div class = "col s12 ">
+              <br>
+              <!--<form class = "col s12">-->
+                <div class = "row"> 
+                  <div class="hide">                           
+                    <input type = "text" value="<?= op_number_list ?>" id="opnumber_list"/>    
+                  </div>
+                  <div class="col s3">              
+                    <label class="red-text"><b>OP Number</b></label>               
+                    <input type = "number" class = "number" required id="opnumber"/>    
+                  </div>
+                  <div class="col s3">              
+                    <label class="red-text"><b>Date of Join</b></label>              
+                    <input type = "date" class = "datepicker" placeholder="dd/mm/yyyy" id="doj"/>    
+                  </div>
+                  <div class="col s3">              
+                    <label class="red-text"><b>Date of Birth</b></label>               
+                    <input type = "date" class = "datepicker" id="dob" />    
+                  </div>
+                  <div class="col s3">              
+                    <label class="red-text"><b>Age on Join</b></label>               
+                    <input type = "number" class = "number" id="age"/>    
+                  </div>
+                  
+                </div> 
+                <div class = "row">
+                  <div class = "input-field col s12">
+                      <i class = "material-icons prefix">account_circle</i>
+                      <input placeholder = "Patient Name" type = "text" class = "active validate" required id="patient_name"/>
+                      <label class="red-text"><b>Patient Name</b></label> 
+                  </div>
+                </div>
+                
+                <div class = "row">
+                  <div class = "input-field col s6">
+                      <input placeholder = "Phone Number" id = "phonenumber" type = "number" class = "validate" >
+                      <label class="red-text"><b>Contact Number</b></label> 
+                  </div>
+                  <div class = "input-field col s6">
+                      <input placeholder = "Email" id = "email" type = "email" class = "validate" id="email">
+                      <label class="red-text"><b>Email</b></label> 
+                  </div>
+                </div>
+                
+                <div class = "row">
+                  <div class="col s3">              
+                    <label class="red-text"><b>House Name</b></label>               
+                    <input type = "text" class = "text" id="housename"/>    
+                  </div>
+                  <div class="col s3">              
+                    <label class="red-text"><b>Place</b></label>               
+                    <input type = "text" class = "text" id="place"/>    
+                  </div>
+                  <div class="col s3">              
+                    <label class="red-text"><b>City</b></label>               
+                    <input type = "text" class = "text" id="city"/>    
+                  </div>
+                  <div class="col s3">              
+                    <label class="red-text"><b>PIN</b></label>               
+                    <input type = "number" class = "number" id="pin"/>    
+                  </div>
+                </div>
+
+                <div class = "row">
+                  <div class = "input-field col s6">
+                    <p>
+                      <input id = "male" type = "radio" name = "gender" value = "male"  />
+                      <label ><b>Male</b></label> 
+                    </p>
+                    
+                    <p>
+                      <input id = "female" type = "radio" name = "gender" value = "female"  />
+                      <label ><b>Female</b></label> 
+                    </p>
+                    
+                    <p>
+                      <input id = "dontknow1" type = "radio" name = "gender" value = "other" checked />
+                      <label ><b>Don't Know</b></label> 
+                    </p>
+                  </div>
+                  
+                  
+                </div>
+                <br>
+                <div class="row">
+                  <div class ="col s6 center">
+                    <button class = "btn waves-effect waves-light red"  id="patient_submit_btn">Submit
+                    <i class = "material-icons right">send</i></button>
+              
+                  </div>
+                  <div class ="col s6 center">
+                    <button class = "btn waves-effect waves-light grey"  id="patient_clear_btn">Clear
+                    <i class = "material-icons right">clear</i></button>
+              
+                  </div>
+
+                </div>
+                
+                        
+              <!--</form>-->
+            
+          </div>
+
+
+        </div>
+        <!-- NEW PATIENT TAB END -->
+
+
+        <!-- CONSULTATION TAB START -->
+        <div id = "consultation" class = "col s12">
+          <div class = "col s12 ">
+          <!-- CARD DIV-- START-->
+          <div class = "card grey lighten-5">
+          <br>
+          <div class = "row">
+          <div class = "input-field col s4">
+            <i class = "material-icons prefix">find_in_page</i>
+            <input placeholder = "Enter OP Number" type = "text" class = "active validate" required id="opnumber_c"/>
+            <label class="red-text"><b>OP Number</b></label>  
+          </div>
+          <div class = "input-field col s4 center">
+            <button class = "btn waves-effect waves-light red"  id="cunsultation_search_btn">Search Patient
+            <i class = "material-icons right">send</i></button>
+          </div>
+          <div class = "input-field col s4">
+            <i class = "material-icons prefix">account_circle</i>
+            <input placeholder = "Patient Name" type = "text" class = "active validate" required id="patient_name_c" disabled/>
+            <label class="red-text"><b>Patient Name</b></label>  
+          </div>
+          </div>
+          <div class="col s12 grey lighten-4">
+           <ul class = "collapsible" data-collapsible = "expandable">
+            <li>
+                <div class = "collapsible-header">
+                  <i class = "material-icons">account_circle</i><b>Patient Personal Information</b></div>
+                <div class = "collapsible-body"> 
+                  <div>
+                    <br>
+                    <div class = "row"> 
+                      <div class="col s3">              
+                        <label class="red-text"><b>Date of Join</b></label>                
+                        <input type = "date" class = "datepicker"  id="doj_c"disabled/>    
+                      </div>
+                      <div class="col s3">              
+                        <label class="red-text"><b>Date of Birth</b></label>            
+                        <input type = "date" class = "datepicker" id="dob_c" disabled/>    
+                      </div>
+                      <div class="col s3">              
+                        <label class="red-text"><b>Age on DOJ</b></label>                
+                        <input type = "number" class = "number" id="age_c" disabled/>    
+                      </div>
+                      <div class="col s3">              
+                        <label class="red-text"><b>Present Age</b></label>                
+                        <input type = "number" class = "number" id="p_age_c" disabled/>    
+                      </div>
+                    </div> 
+                    <div class = "row">
+                      <div class = "input-field col s12">
+                          <i class = "material-icons prefix">account_circle</i>
+                          <input placeholder = "Patient Name" type = "text" class = "active validate" required id="patient_name_c2" disabled/>
+                          <label class="red-text"><b>Patient Name</b></label>  
+                      </div>
+                    </div>
+                  
+                    <div class = "row">
+                      <div class = "input-field col s6">
+                        <input placeholder = "Phone Number" id = "phonenumber_c2" type = "number" class = "validate" disabled>
+                        <label class="red-text"><b>Phone Number</b></label>  
+                      </div>
+                      <div class = "input-field col s6">
+                        <input placeholder = "Email" type = "email" class = "validate" id="email_c" disabled>
+                        <label class="red-text"><b>Email</b></label>  
+                      </div>
+                    </div>
+                  
+                    <div class = "row">
+                      <div class="col s3">              
+                        <label class="red-text"><b>House Name</b></label>              
+                        <input type = "text" class = "text" id="housename_c" disabled/>    
+                      </div>
+                      <div class="col s3">              
+                        <label class="red-text"><b>Place</b></label>               
+                        <input type = "text" class = "text" id="place_c" disabled/>    
+                      </div>
+                      <div class="col s3">              
+                        <label class="red-text"><b>City</b></label>                
+                        <input type = "text" class = "text" id="city_c" disabled/>    
+                      </div>
+                      <div class="col s3">              
+                        <label class="red-text"><b>PIN</b></label>               
+                        <input type = "number" class = "number" id="pin_c" disabled/>    
+                      </div>
+                    </div>
+
+                    <div class = "row">
+                      <div class = "input-field col s6">
+                        <p>
+                          <input id = "male" type = "radio" name = "gender_c" value = "male"  disabled/>
+                          <label class="red-text text-lighten-3"><b>Male</b></label>  
+                        </p>
+                        
+                        <p>
+                          <input id = "female" type = "radio" name = "gender_c" value = "female" disabled />
+                          <label class="red-text text-lighten-3"><b>Female</b></label> 
+                        </p>
+                        
+                        <p>
+                          <input id = "dontknow1" type = "radio" name = "gender_c" value = "other" disabled/>
+                          <label class="red-text text-lighten-3"><b>Don't Know</b></label> 
+                        </p>
+                      </div>
+                      <div class = "input-field col s6">
+                        <p>
+                          <input id = "married" type = "radio" name = "maritial_status_c" value = "married" disabled />
+                          <label class="red-text text-lighten-3"><b>Married</b></label> 
+                        </p>
+                        
+                        <p>
+                          <input id = "single" type = "radio" name = "maritial_status_c" value = "single"  disabled/>
+                          <label class="red-text text-lighten-3"><b>Single</b></label> 
+                        </p>
+                        
+                        <p>
+                          <input id = "dontknow2" type = "radio" name = "maritial_status_c" value = "other" disabled />
+                          <label class="red-text text-lighten-3"><b>Don't Know</b></label> 
+                        </p>
+                      </div>
+                      
+                    </div>
+                    <br>
+                    
+                  </div>
+                </div>
+                
+            </li>
+            
+            <li>
+                <div class = "collapsible-header">
+                  <i class = "material-icons">history</i><b>Patient Medical History</b></div>
+                <div class = "collapsible-body">
+                  <div class="row">
+                    <div class="col s12">
+                      <label class="red-text text-lighten-3"><b>Patient's Previous Disease History</b></label> 
+                      <div class="chips-autocomplete" id="patient_disease_his"></div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col s12">
+                      <label class="red-text text-lighten-3"><b>Patient's <i>Family</i> Previous Disease History</b></label> 
+                      <div class="chips-autocomplete" id="patient_family_disease_his"></div>
+                    </div>
+                  </div>
+                </div>
+            </li>
+            
+            <li>
+                <div class = "collapsible-header">
+                  <i class = "material-icons">history</i><b>Patient Consultation History</b></div>
+                <div class = "collapsible-body"><p>This is third section.</p></div>
+            </li>
+            <li>
+                <div class = "collapsible-header active">
+                  <i class = "material-icons">note</i><b>Enter Current Case Details</b></div>
+                <!-- CURRENT CASE DIV START-->
+                <div class = "collapsible-body">
+                  
+                  <div class="row">
+                    <div class="col s4">              
+                      <label class="red-text"><b>Date of Consultation</b></label>             
+                      <input type = "date" class = "datepicker"  id="doj_con"/>    
+                    </div>
+                    <div class="col s4">              
+                      <div class="switch center">
+                        <label class="red-text"><b>Is this case continuation of previous one?</b></label>  
+                        <p>
+                          <label>
+                            No
+                            <input type="checkbox" id="is_continuation_con">
+                            <span class="lever"></span>
+                            Yes
+                          </label>
+                        </p>
+                      </div> 
+                    </div>
+                    <div class="col s4">              
+                      <label class="red-text"><b>Case ID</b></label>              
+                      <input type = "number" class = "number" placeholder="if yes, Enter previous Case ID" id="case_id_con" disabled/>    
+                    </div>
+                  </div>
+                  <div>  
+                    <ul class = "collapsible" data-collapsible = "expandable">
+                      <li>
+                          <div class = "collapsible-header">
+                            <i class = "material-icons">keyboard_arrow_down</i><b>1. Patient's Personal Clinical Data</b></div>
+                          <div class = "collapsible-body">  
+
+                            <ul class="collection">
+                              <li class="collection-item">
+                                <div class="row">
+                                  <div class="col s2">              
+                                    <label class="red-text"><b>BP</b></label>             
+                                    <input type = "text" class = "text" value="" id="bp_con" placeholder="Enter BP"/>    
+                                  </div>
+                                  <div class="col s2">              
+                                    <label class="red-text"><b>Temperature(degC)</b></label>             
+                                    <input type = "text" class = "text" value="" id="temp_con" placeholder="Enter Temp"/>    
+                                  </div>
+                                  <div class="col s2">              
+                                    <label class="red-text"><b>Weight(kg)</b></label>             
+                                    <input type = "text" class = "text" value="" id="wt_con" placeholder="Enter Weight"/>    
+                                  </div>
+                                  <div class="col s2">              
+                                    <label class="red-text"><b>Height(cm)</b></label>             
+                                    <input type = "text" class = "text" value="" id="ht_con" placeholder="Enter Height"/>    
+                                  </div>  
+                                  <div class="col s2">              
+                                    <label class="red-text"><b>BMI</b></label>             
+                                    <input type = "text" class = "text" value="" id="bmi_con" placeholder="BMI" disabled/>    
+                                  </div> 
+                                  <div class="col s2">              
+                                    <div class="switch center">
+                                      <label class="red-text"><b>Is patient diabetic?</b></label>  
+                                      <p>
+                                        <label>
+                                          No
+                                          <input type="checkbox" id="is_diabetic_con">
+                                          <span class="lever"></span>
+                                          Yes
+                                        </label>
+                                      </p>
+                                    </div> 
+                                  </div>
+                                  
+                                </div>
+                                <div class="row">
+                                  <div class="col s12">              
+                                    <label class="red-text"><b>Habits/Remarks</b></label>             
+                                    <input type = "text" class = "text" value="" id="habits_con" placeholder="Enter Habits"/>    
+                                  </div>
+                                </div>
+                              </li>
+
+                            </ul>                           
+                          </div>
+                        
+                      </li>
+                      <li>
+                        <div class = "collapsible-header">
+                            <i class = "material-icons">keyboard_arrow_down</i><b>2. Tests/Scan/Reports</b></div>
+                          <div class = "collapsible-body">
+                            <ul class="collection">
+                              <li class="collection-item">
+                                <div class="row">B</div>
+                              </li>
+                            </ul>
+                          </div>
+                      </li>
+                    </ul>
+                  </div>
+
+
+                </div>
+                <!-- CURRENT CASE DIV START-->
+            </li>
+          </ul>	  
+          </div>
+          <div class="row">
+            <div class ="col s6 center">
+              <button class = "btn waves-effect waves-light red"  id="patient_edit_btn" disabled>Edit
+              <i class = "material-icons right">send</i></button>
+        
+            </div>
+            <div class ="col s6 center">
+              <button class = "btn waves-effect waves-light red"  id="patient_save_btn" disabled>Save
+              <i class = "material-icons right">send</i></button>
+        
+            </div>
+            
+                  
+          </div>
+          </div>
+          </div> 
+        
+        </div>
+        <!-- CONSULTATION TAB END -->
+        
+
+  
+      </div> 
+
+  <!-- Modals -->
+  
+  <div id="errorModal" class="modal">
+    <div class="modal-content red lighten-4">
+      <h4>Oh Oh! Thats an error !</h4>
+      <div>
+        <p id="errorMessage"></p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class = "modal-close btn waves-effect waves-light red center">Ok
+        <i class = "material-icons right">clear</i>
+      </button>
+      </button>
+    </div>
+  </div>
+
+  <div id="successModal" class="modal">
+    <div class="modal-content green lighten-4">
+      <h4>Success!</h4>
+      <div>
+        <p id="successMessage"></p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class = "modal-close btn waves-effect waves-light green center">Ok
+        <i class = "material-icons right">check</i>
+      </button>
+      </button>
+    </div>
+  </div>
+
+   </body>
+   <!-- BODY END -->
+   <?!= include("page-js"); ?>
+</html>

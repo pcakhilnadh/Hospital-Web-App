@@ -1,0 +1,188 @@
+<script>
+  $(document).ready(function(){
+    $("#myInput").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+
+    
+  });
+
+
+  document.getElementById("patient_submit_btn").addEventListener("click",PatientSubBtnClicked);
+  document.getElementById("patient_clear_btn").addEventListener("click",ClearAddPatientForms);
+  document.getElementById("sync_btn").addEventListener("click",ReloadPage);
+
+  function ShowErrorModal(message) { 
+    $('#errorModal').modal();
+    $('#errorModal').modal('open'); 
+    document.getElementById("errorMessage").innerHTML = message;
+  }
+
+  function ShowSuccessModal(message) { 
+    $('#successModal').modal();
+    $('#successModal').modal('open'); 
+    document.getElementById("successMessage").innerHTML = message;
+  }
+
+
+  function GetPatientFormData()
+  {
+    var opnumber = document.getElementById("opnumber").value;
+    var doj = document.getElementById("doj").value;
+    var dob = document.getElementById("dob").value;
+    var age = document.getElementById("age").value;
+    var patient_name = document.getElementById("patient_name").value;
+    var phonenumber = document.getElementById("phonenumber").value;
+    var email = document.getElementById("email").value;
+    var housename = document.getElementById("housename").value;
+    var place = document.getElementById("place").value;
+    var city = document.getElementById("city").value;
+    var pin = document.getElementById("pin").value;
+    var gender = GetCheckedRadioValueByGroupName("gender")
+    var maritial_status = GetCheckedRadioValueByGroupName("maritial_status")
+
+
+    var form_data = {
+      opnumber : opnumber,
+      doj: doj,
+      dob: dob,
+      age: age,
+      patient_name : patient_name,
+      phonenumber:phonenumber,
+      email: email,
+      housename : housename,
+      place : place,
+      city: city,
+      pin:pin,
+      gender:gender,
+      maritial_status:maritial_status
+    }
+    return form_data;
+  }
+
+  function GetNewPatientFormValidation(form_data)
+  {
+    var opnumber_list = document.getElementById("opnumber_list").value
+    var response = {
+      isValid : false,
+      message : ""
+    }
+    if(form_data.opnumber.trim()=="")
+    {
+      response.message += "OP Number cannot be blank ! "
+    }
+    else if(form_data.patient_name.trim()=="")
+    {
+      response.message += "Patient Name cannot be blank ! "
+    }
+    else if(form_data.doj.trim()=="")
+    {
+      response.message += "Date of Join cannot be blank ! "
+    }
+    else if(opnumber_list.includes(form_data.opnumber))
+    {
+      response.message += "OP Number already existis ! \n Couldn't add Patient!"
+    }
+    else
+    {
+      response.isValid=true;
+    }
+      
+    
+    
+
+    return response;
+  }
+
+  function ClearAddPatientForms()
+  {
+    
+    document.getElementById("opnumber").value="";
+    document.getElementById("doj").value="";
+    document.getElementById("dob").value="";
+    document.getElementById("age").value="";
+    document.getElementById("patient_name").value="";
+    document.getElementById("phonenumber").value="";
+    document.getElementById("email").value="";
+    document.getElementById("housename").value="";
+    document.getElementById("place").value="";
+    document.getElementById("city").value="";
+    document.getElementById("pin").value="";
+
+  }
+  function ReloadPage()
+  {
+    var SCRIPT_ID="AKfycbw3amoXdNkt_saqiXx2e6sfWCzgYgf8PWZCIwWXVkKiQNByIS5FJ6ZTeTkq6F4Jwha_"
+    window.open("https://script.google.com/macros/s/"+SCRIPT_ID+"/exec",'_top'); 
+  }
+  function PatientSubBtnClicked()
+  {
+    var form_data =GetPatientFormData();
+    var validation_res = GetNewPatientFormValidation(form_data);
+
+    if (validation_res.isValid)
+    {
+      google.script.run.PatientSubmitBtnClicked(FlatenDictToArray(form_data));
+      ShowSuccessModal("New Patient Added Successfully! \n Refresh page to load new data !");
+      ClearAddPatientForms();
+      
+    }
+    else 
+    {
+      ShowErrorModal(validation_res.message);
+    }
+    
+    
+  }
+  function GetCheckedRadioValueByGroupName(group_name) 
+  {
+    var ele = document.getElementsByName(group_name);
+    for(i = 0; i < ele.length; i++) 
+    {
+      if(ele[i].checked)
+      {
+        return ele[i].value;
+      }
+    }
+    return null;
+  }
+  function FlatenDictToArray(mydict)
+  {
+    var arr = [];
+    for (var key in mydict)
+    {
+      arr.push(mydict[key])
+    }
+    return arr;
+  }
+
+</script>
+<script>
+  var disease_dic = {
+        			'DEBILIDAD': null,
+        			'DIARREA': null,
+        			'ABDOMEN AGUDO': null,
+        			' ABDOMEN AGUDO': null,
+        			
+        			'ORTOPNEA': null,
+        			'PALIDEZ MUSCULAR': null,
+        			'PÁPULAS': null,
+        			'PARÁLISIS': null,
+              'TOS': null,
+			};
+
+    $( document ).ready(function() {
+
+
+        	$('.chips-autocomplete').material_chip({
+        		secondaryPlaceholder: 'Type a Disease',
+        		placeholder: '+Add Disease',
+        		autocompleteData: disease_dic
+                });
+    });
+  
+</script> 
